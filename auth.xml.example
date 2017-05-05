@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<data>
+  <service name="wzguest">
+    <user>PRENOM.NOM@total.com</user>
+    <password>PWD</password>
+    <url>https://guest.hubtotal.net:1003</url>
+    <redirurl>http://www.iero.org/test</redirurl>
+  </service>
+</data>
