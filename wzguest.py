@@ -1,4 +1,5 @@
 import requests
+import time
 
 import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
