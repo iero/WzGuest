@@ -44,7 +44,8 @@ def letMeIn(client, baseurl, magic, username, password,redirurl) :
     url = baseurl+"/"
     print("+-[url] : {}".format(url))
     r = client.post(url, data=payload, headers=dict(Referer=url))
-    #print("+-[status] : {} (need to be 303)".format(r.status))
+    if (r.content.contains('OK')) : return True
+    else : return False
 
 if __name__ == "__main__":
 
@@ -58,7 +59,10 @@ if __name__ == "__main__":
             url = service.find("url").text
             redirurl = service.find("redirurl").text
 
-    client = requests.session()
-    magic = getMagic(client,redirurl)
-    if magic :
-        letMeIn(client,url,magic,username,password,redirurl)
+    connected = False
+    while not connected :
+        client = requests.session()
+        magic = getMagic(client,redirurl)
+        if magic :
+            connected = letMeIn(client,url,magic,username,password,redirurl)
+        time.sleep(20)
