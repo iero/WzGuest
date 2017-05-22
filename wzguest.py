@@ -45,8 +45,11 @@ def letMeIn(client, baseurl, magic, username, password,redirurl) :
     url = baseurl+"/"
     print("+-[url] : {}".format(url))
     r = client.post(url, data=payload, headers=dict(Referer=url))
-    if b'OK' in r.content : return True
-    else : return False
+    if b'OK' in r.content :
+        print("+-[Connected] !")
+        return True
+    else :
+        return False
 
 if __name__ == "__main__":
 
@@ -66,4 +69,6 @@ if __name__ == "__main__":
         magic = getMagic(client,redirurl)
         if magic :
             connected = letMeIn(client,url,magic,username,password,redirurl)
-        time.sleep(20)
+        if not connected :
+            print("+-[Connection] failed. Wait 20s to retry")
+            time.sleep(20)
