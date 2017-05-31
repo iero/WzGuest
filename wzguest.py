@@ -1,6 +1,9 @@
 import requests
 import time
 
+#sudo pip install wireless
+from wireless import Wireless
+
 import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
 
@@ -62,6 +65,21 @@ if __name__ == "__main__":
             password = service.find("password").text
             url = service.find("url").text
             redirurl = service.find("redirurl").text
+            ssid = service.find("ssid").text
+
+    connected = False
+    while not connected :
+        wireless = Wireless()
+        s = wireless.current()
+        if s == ssid :
+            print("+-[Connected] to {}".format(ssid))
+            connected = True
+        else :
+            print("+-[Not connected] to {}. Wait 5s to retry".format(ssid))
+            time.sleep(5)
+
+    # if "WZ_Web" in subprocess.check_output("netsh wlan show interfaces"):
+    #     print("I am @ Total")
 
     connected = False
     while not connected :
@@ -70,5 +88,5 @@ if __name__ == "__main__":
         if magic :
             connected = letMeIn(client,url,magic,username,password,redirurl)
         if not connected :
-            print("+-[Connection] failed. Wait 20s to retry")
-            time.sleep(20)
+            print("+-[Connection] failed. Wait 10s to retry")
+            time.sleep(10)

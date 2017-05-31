@@ -1,3 +1,6 @@
+0 - Install dependancies :
+	Wireless for network check - https://github.com/joshvillbrandt/wireless
+	# pip install wireless 
 1 - Create auth.xml file based on auth.xml.example
 2 - Launch # python wzguest.py
 3 - Enjoy
