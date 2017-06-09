@@ -1,7 +1,18 @@
+# G. Fabre 05/2017 for Apple@Total project
+#  
+# This script is able to connect automaticaly to Total Guest network
+#
+# Install :
+# Create auth.xml (example provided) with your creditential
+# Launch using wzguest.bash or python wzguest.py
+#
+# Dependencies :
+# - Python 3
+# - pip install wireless
+
 import requests
 import time
 
-#sudo pip install wireless
 from wireless import Wireless
 
 import xml.etree.ElementTree as ET
