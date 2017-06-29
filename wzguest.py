@@ -1,5 +1,5 @@
 # G. Fabre 05/2017 for Apple@Total project
-#  
+#
 # This script is able to connect automaticaly to Total Guest network
 #
 # Install :
@@ -12,6 +12,7 @@
 
 import requests
 import time
+import sys
 
 from wireless import Wireless
 
@@ -27,8 +28,13 @@ def getMagic(client, url) :
     magic = None
     try :
         r = client.get(url)
+        # Test if already connected to internet
+        if b'OK' in r.content :
+            print("+-[Already Connected] !")
+            return 0
+
+        # Otherwise get magic number
         soup = BeautifulSoup(r.content, "html.parser")
-        #print(soup)
         desc = soup.find("input", {"name":"magic"})
         magic = desc['value']
         print("+-[magic] : {}".format(magic))
@@ -60,7 +66,7 @@ def letMeIn(client, baseurl, magic, username, password,redirurl) :
     print("+-[url] : {}".format(url))
     r = client.post(url, data=payload, headers=dict(Referer=url))
     if b'OK' in r.content :
-        print("+-[Connected] !")
+        print("+-[Connected] to Internet !")
         return True
     else :
         return False
@@ -78,6 +84,7 @@ if __name__ == "__main__":
             redirurl = service.find("redirurl").text
             ssid = service.find("ssid").text
 
+    # Test if connected to the right wifi network
     connected = False
     while not connected :
         wireless = Wireless()
@@ -89,15 +96,18 @@ if __name__ == "__main__":
             print("+-[Not connected] to {}. Wait 5s to retry".format(ssid))
             time.sleep(5)
 
-    # if "WZ_Web" in subprocess.check_output("netsh wlan show interfaces"):
-    #     print("I am @ Total")
-
+    # Catch captive portal and authentificate
     connected = False
     while not connected :
         client = requests.session()
         magic = getMagic(client,redirurl)
-        if magic :
+
+        if magic == 0 :
+            connected = True
+            sys.exit(0)
+        elif magic :
             connected = letMeIn(client,url,magic,username,password,redirurl)
+
         if not connected :
             print("+-[Connection] failed. Wait 10s to retry")
             time.sleep(10)

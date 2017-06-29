@@ -6,5 +6,6 @@
     <password>PWD</password>
     <url>https://guest.hubtotal.net:1003</url>
     <redirurl>http://www.iero.org/test</redirurl>
+    <keychain value="False"/>
   </service>
 </data>
