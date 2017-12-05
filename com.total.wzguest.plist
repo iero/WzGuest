@@ -4,17 +4,23 @@
 <dict>
 
     <key>Label</key>
-    <string>WifiGuest</string>
+    <string>com.total.wzguest</string>
 
     <key>ProgramArguments</key>
     <array>
-        <string>~/Library/Scripts/wzguest.bash</string>
+        <string>/Users/USERNAME/Library/Application Scripts/com.total.network/wzguest.bash</string>
     </array>
 
     <key>WatchPaths</key>
     <array>
         <string>/Library/Preferences/SystemConfiguration/com.apple.airport.preferences.plist</string>
     </array>
+
+    <!-- debug -->
+    <key>StandardErrorPath</key>
+    <string>/tmp/com.total.wzguest.err</string>
+    <!--key>StandardOutPath</key>
+    <string>/tmp/wzguest.out</string-->
 
 </dict>
 </plist>

@@ -1,10 +1,10 @@
 # G. Fabre 05/2017 for Apple@Total project
-# Updated 12/2017
+# Updated 09/2017
 #
 # This script let you connect automaticaly to Total Guest network
 #
 # Install Dependencies :
-# - pip install wireless
+# - Python 3 (using Anaconda for example)
 #
 # On Mac@Total macbooks, we use Apple session keychain to store connection credits
 # - Launch install.bash and follow steps
@@ -16,12 +16,16 @@
 # If you change 'redirurl', make sure the target page contains 'OK' chain.
 
 import time, sys
-import requests
 
 import xml.etree.ElementTree as ET
 
 from bs4 import BeautifulSoup
-from wireless import Wireless
+
+# check python version
+if sys.version_info >= (3,0):
+    from urllib.parse import urlencode
+else:
+    from urllib import urlencode
 
 def getMagic(client, url) :
     print("+-[url] : {}".format(url))
@@ -45,58 +49,31 @@ def getMagic(client, url) :
 
 def letMeIn(client, baseurl, magic, username, password, redirurl) :
     # Send ok for CGU
-    try :
-        payload = {
-            '4Tredir':redirurl,
-            'magic':magic,
-            'answer':'1'
-            }
-        url = baseurl+"/fgtauth?"+magic
-        print("+-[url] : {}".format(url))
-        r = client.post(url, data=payload, headers=dict(Referer=url))
-        #print("+-[status] : {} (need to be 200)".format(r.status))
+    payload = urllib.parse.urlencode({
+        '4Tredir':redirurl,
+        'magic':magic,
+        'answer':'1'
+        })
+    url = baseurl+"/fgtauth?"+magic
+    print("+-[url] : {}".format(url))
+    r = client.post(url, data=payload, headers=dict(Referer=url))
+    #print("+-[status] : {} (need to be 200)".format(r.status))
 
-        # Send credits
-        payload = {
-            '4Tredir':redirurl,
-            'magic':magic,
-            'username':username,
-            'password':password
-            }
-        url = baseurl+"/"
-        print("+-[url] : {}".format(url))
-        r = client.post(url, data=payload, headers=dict(Referer=url))
-        if b'OK' in r.content :
-            print("+-[Connected] to Internet !")
-            return True
-        else :
-            return False
-    except :
+    # Send credits
+    payload = urllib.parse.urlencode({
+        '4Tredir':redirurl,
+        'magic':magic,
+        'username':username,
+        'password':password
+        })
+    url = baseurl+"/"
+    print("+-[url] : {}".format(url))
+    r = client.post(url, data=payload, headers=dict(Referer=url))
+    if b'OK' in r.content :
+        print("+-[Connected] to Internet !")
+        return True
+    else :
         return False
-
-def checkNetwork(ssid) :
-    timeout = 20
-    sleeptime = 5
-    loop = 0
-    while loop < timeout :
-        wireless = Wireless()
-        s = wireless.current()
-
-        # Connected to a wifi network
-        if s is not None :
-            # Total network
-            if s == ssid :
-                print("+-[Connected] to {}".format(ssid))
-                return True
-            # Another wifi network
-            else :
-                return True
-        else :
-            print("+-[Not connected] to {}. Waiting 5s to retry".format(ssid))
-            time.sleep(sleeptime)
-            loop +=1
-
-    return False
 
 if __name__ == "__main__":
 
@@ -121,20 +98,15 @@ if __name__ == "__main__":
             redirurl = service.find("redirurl").text
             ssid = service.find("ssid").text
 
-    # Test if connected to the a wifi network
-    if not checkNetwork(ssid) :
-        sys.exit(1)
-
     # Catch captive portal and authentificate
     connected = False
     while not connected :
         client = requests.session()
-        client.headers['User-Agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
         magic = getMagic(client,redirurl)
 
         if magic == 0 :
             connected = True
-            sys.exit(1)
+            sys.exit(0)
         elif magic :
             connected = letMeIn(client,url,magic,username,password,redirurl)
 

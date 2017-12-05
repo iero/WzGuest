@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<data>
+  <service name="wzguest">
+    <ssid>WZ_Web</ssid>
+    <url>https://guest.hubtotal.net:1003</url>
+    <redirurl>http://www.iero.org/test</redirurl>
+    <keychain value="True"/>
+  </service>
+</data>
