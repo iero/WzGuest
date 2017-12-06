@@ -23,11 +23,14 @@ import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
 from wireless import Wireless
 
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 def getMagic(client, url) :
     print("+-[url] : {}".format(url))
     magic = None
     try :
-        r = client.get(url)
+        r = client.get(url, verify=False)
         # Test if already connected to internet
         if b'OK' in r.content :
             print("+-[Already Connected] !")
