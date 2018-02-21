@@ -43,3 +43,7 @@ fi
 sed s/USERNAME/$USER/ com.total.wzguest.plist > /Users/$USER/Library/LaunchAgents/com.total.wzguest.plist
 launchctl load /Users/$USER/Library/LaunchAgents/com.total.wzguest.plist
 echo "Load agent"
+
+# Pip
+echo "Warning : Install dependancies : need to launch [ pip install Wireless ] manualy"
+#pip install Wireless
