@@ -4,7 +4,7 @@
     <ssid>WZ_Web</ssid>
     <user>PRENOM.NOM@total.com</user>
     <password>PWD</password>
-    <url>https://guest.hubtotal.net:1003</url>
+    <url>https://login.cloudi-fi.net/auth/module.php/multiauth/selectsource.php</url>
     <redirurl>http://www.iero.org/test</redirurl>
     <keychain value="False"/>
   </service>

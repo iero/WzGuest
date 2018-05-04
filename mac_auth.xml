@@ -2,7 +2,7 @@
 <data>
   <service name="wzguest">
     <ssid>WZ_Web</ssid>
-    <url>https://guest.hubtotal.net:1003</url>
+    <url>https://login.cloudi-fi.net/auth/module.php/multiauth/selectsource.php</url>
     <redirurl>http://www.iero.org/test</redirurl>
     <keychain value="True"/>
   </service>
